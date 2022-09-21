@@ -16,7 +16,7 @@ pipeline {
     environment {
         AWS_CRED        = 'AWS_linazhao' //Change to yours
         OwnerEmail      = 'linazhao881@gmail.com' //Change to yours
-        S3BucketName    = 'linazhaotute-wk8-moingt' //Change to yours, used to save cfn yml files larger than 50KB
+        S3BucketName    = 'linazhaotute-wk8-monitoning' //Change to yours, used to save cfn yml files larger than 50KB
         SecurityGroupID = 'sg-0212b4a25537026c9' //Change to your default VPC's default security group ID
         JenkinsServer   = 'http://20.188.28.15:8080/'   //Change to your JenkinsServer URL
         AWS_REGION      = 'ap-southeast-2'
