@@ -14,7 +14,7 @@ provider "aws" {
 }
 
 resource "aws_security_group_rule" "monitor_ports" {
-  for_each          = toset(var.sec_ports)
+  for_each          = toset(var.sec_ports)//对于每一个ports
   type              = "ingress"
   from_port         = each.key
   to_port           = each.key
@@ -56,7 +56,7 @@ resource "aws_instance" "monitor" {
   key_name = "${aws_key_pair.deployer.key_name}"
 
   tags = {
-    Name    = (count.index==0 ? "main" : "exporter-${count.index}")
+    Name    = (count.index==0 ? "main" : "exporter-${count.index}")// there will be three instance check coun.index =0 or not, if index=0 then name wil be main, if it is not ), then it will be exporter 1 2
     Group   = (count.index==0 ? "main" : "exporter")
     Project = "JRMonitor"
   }

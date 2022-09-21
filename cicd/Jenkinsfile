@@ -26,7 +26,7 @@ pipeline {
         EC2Template     = 'LinuxMachineDeploy.yaml'
         InstanceType    = 't2.micro'
         InstanceCount   = 3
-        SecurityPorts   = '[22,443,3000,8080,9100]' //SSH, HTTPS, grafana, cadvisor, node-exporter
+        SecurityPorts   = '[22,443,3000,8080,9100]' //SSH, HTTPS, grafana, cadvisor, node-exporter line92 use it configure variable in the front 
 
 
     }
@@ -37,7 +37,7 @@ pipeline {
             when {expression{return params.blCreateVPC}}
             steps {
                 withAWS(credentials: AWS_CRED, region: 'ap-southeast-2') {
-                    // some block
+                    // dir cfn cloud formation 
                     dir('cfn') {
                         sh '''
                             aws s3 mb s3://$S3BucketName --region $AWS_REGION
@@ -82,6 +82,7 @@ pipeline {
             // sudo -i
             // su jenkins
             // ssh-keygen (press ENTER for passphrase)
+            //传进去三个变量，这三个变量需要需要在terraform 中定义，所以有一个variable。tf 文件，只需要有一个描述
             when {expression{return params.blTFApply}}
             steps {
                 withAWS(credentials: AWS_CRED, region: 'ap-southeast-2') {
@@ -116,6 +117,8 @@ pipeline {
                 }
             }
         }
+        //use script 128 to obtain the IP address use terraform output.jq is used to get json format, get[1] is exporter1 to experportrer1_IP 
+        //sed replace 
         stage('Setup Instances') {
             when {expression{return params.blUpdateAWS}}
             steps {
@@ -129,9 +132,9 @@ pipeline {
                     }
                     dir('ansible') {
                         sh """
-                            sed -i 's/Exporter1_IP/${Exporter1_IP}/g' prometheus.yml
-                            sed -i 's/Exporter2_IP/${Exporter2_IP}/g' prometheus.yml
-                            sed -i 's/MyJenkinsServer/${JenkinsServer}/g' prometheus.yml
+                            sed -i 's|Exporter1_IP|${Exporter1_IP}|g' prometheus.yml
+                            sed -i 's|Exporter2_IP|${Exporter2_IP}|g' prometheus.yml
+                            sed -i 's|MyJenkinsServer|${JenkinsServer}|g' prometheus.yml
                             ansible-playbook playbook.yml 
                     """
                     }
