@@ -7,5 +7,5 @@ filters:
   tag:Project: JRMonitor
 keyed_groups:
   - prefix: Monitor # prefix is 'Monitor_'
-    key: tags['Group'] # the Name tag can be 'main' or 'exporter'
+    key: tags['Group'] # the Name tag can be 'main' or 'exporter' three instance 
     # so the groups are Monitor_main and Monitor_exporter

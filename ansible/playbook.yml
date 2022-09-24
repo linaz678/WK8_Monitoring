@@ -9,7 +9,7 @@
         name: docker-compose
         state: present # declerative
         update_cache: yes
-
+#tag of the ec2 instance // upload file to server destination  copy and with item 
 - hosts: Monitor_main
   become: yes
   become_user: root
